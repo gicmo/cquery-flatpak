@@ -1,0 +1,35 @@
+id: org.cquery.cquery
+runtime: org.freedesktop.Platform
+sdk: org.freedesktop.Sdk
+runtime-version: 1.6
+command: cquery
+finish-args:
+  - --share=ipc
+  - --share=network
+  # Grant app access to ~/Pictures
+  - --filesystem=home
+build-options:
+  cflags: -O2 -g
+  env: { V: '1' }
+cleanup: [ /share/man ]
+modules:
+  - name: libclang
+    buildsystem: cmake-ninja
+    builddir: true
+    config-opts: ["-DCMAKE_BUILD_TYPE=Release" ]
+    sources:
+      - type: archive
+        url: https://releases.llvm.org/6.0.0/llvm-6.0.0.src.tar.xz
+        sha256: 1ff53c915b4e761ef400b803f07261ade637b0c269d99569f18040f3dcee4408
+      - type: archive
+        url: https://releases.llvm.org/6.0.0/cfe-6.0.0.src.tar.xz
+        sha256: e07d6dd8d9ef196cfc8e8bb131cbd6a2ed0b1caf1715f9d05b0f0eeaddb6df32
+        dest: "tools/clang"
+  - name: cquery
+    buildsystem: cmake
+    builddir: true
+    config-opts: ["-DCMAKE_BUILD_TYPE=Release", "-DSYSTEM_CLANG=ON" ]
+    sources:
+      - type: git
+        url: https://github.com/cquery-project/cquery.git
+
