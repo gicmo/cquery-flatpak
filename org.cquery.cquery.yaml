@@ -4,9 +4,6 @@ sdk: org.freedesktop.Sdk
 runtime-version: 1.6
 command: cquery
 finish-args:
-  - --share=ipc
-  - --share=network
-  # Grant app access to ~/Pictures
   - --filesystem=home
 build-options:
   cflags: -O2 -g
